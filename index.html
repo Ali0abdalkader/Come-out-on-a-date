@@ -109,17 +109,19 @@
 
   <script src="script.js"></script>
   <!-- Firebase SDK -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
 
 <script>
   const firebaseConfig = {
-    apiKey: "ضع_هنا_apiKey_اللي_نسخته",
-    authDomain: "ضع_هنا_authDomain",
-    projectId: "ضع_هنا_projectId",
-    storageBucket: "ضع_هنا_storageBucket",
-    messagingSenderId: "ضع_هنا_messagingSenderId",
-    appId: "ضع_هنا_appId"
+    apiKey: "AIzaSyD4p32Zv8zXmkkwY5XcvakJ4oCu3zQPiQ",
+    authDomain: "date-responses-7d352.firebaseapp.com",
+    projectId: "date-responses-7d352",
+    storageBucket: "date-responses-7d352.firebasestorage.app",
+    messagingSenderId: "1:5242546167",
+    appId: "1:5242546167:web:3d9d5a01e8af854caff0f2",
+    measurementId: "G-0Z86Y603VD"
   };
 
   firebase.initializeApp(firebaseConfig);
@@ -137,10 +139,13 @@
       plan: planVal,
       food: selectedFood,
       timestamp: new Date()
+    }).then(() => {
+      console.log('Response saved!');
+    }).catch((error) => {
+      console.error('Error saving:', error);
     });
   }
 
-  // تعديل دالة confirmDate
   const originalConfirm = confirmDate;
   confirmDate = function() {
     saveResponse();
