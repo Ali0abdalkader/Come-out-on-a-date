@@ -2,16 +2,30 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Will you go on a date with me?</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <div class="badge"> 🐼BUILT WITH ALI 💜</div>
+  <div class="badge">🐼 BUILT WITH Ali 💜</div>
 
-  <!-- STEP 0: السؤال الرئيسي -->
-  <section class="card step" id="step-ask">
+  <!-- STEP 0: إدخال الاسم -->
+  <section class="card step" id="step-name">
+    <p class="small-title">BEFORE WE START</p>
+    <div class="icon">👤</div>
+    <h1>What's your name?</h1>
+    <p class="sub">I'd love to know who I'm asking 💜</p>
+
+    <label>YOUR NAME</label>
+    <input type="text" id="nameInput" placeholder="Enter your name..." />
+
+    <button class="btn-primary" onclick="saveNameAndContinue()">Continue 💜</button>
+  </section>
+
+  <!-- STEP 1: السؤال الرئيسي -->
+  <section class="card step hidden" id="step-ask">
     <p class="small-title">A SMALL QUESTION</p>
     <h1>Will you go on a date with me?</h1>
     <p class="sub">Take your time.</p>
@@ -27,7 +41,7 @@
     </div>
   </section>
 
-  <!-- STEP 1: التاريخ والوقت -->
+  <!-- STEP 2: التاريخ والوقت -->
   <section class="card step hidden" id="step-date">
     <p class="small-title">STEP 1 OF 2</p>
     <div class="icon">📅</div>
@@ -35,7 +49,7 @@
     <p class="sub">Pick a date and time , I'll make it special.</p>
 
     <label>DATE</label>
-    <input type="date" id="dateInput" value="2026-07-29" />
+    <input type="date" id="dateInput" value="2026-07-29" lang="en" />
 
     <label>TIME</label>
     <select id="timeInput">
@@ -50,41 +64,41 @@
       <option>Stars Night</option>
       <option>Cozy Coffee</option>
       <option>Sunset Walk</option>
-      <option>Nice dinner</option>
-      <option>Cinema time</option>
-      <option>Bowling game</option>
-      <option>Surprise you? ✨</option>
+      <option>Nice Dinner</option>
+      <option>Cinema Time</option>
+      <option>Bowling Game</option>
+      <option>Surprise?✨</option>
     </select>
 
     <button class="btn-primary" onclick="goTo('step-food')">Next: the food →</button>
   </section>
 
-  <!-- STEP 2: الطعام -->
+  <!-- STEP 3: الطعام -->
   <section class="card step hidden" id="step-food">
     <p class="small-title">STEP 2 OF 2</p>
-    <div class="icon">🍽️</div>
+    <div class="icon">🍽</div>
     <h1>What should we eat?</h1>
-    <p class="sub">The most important decision of the night. Choose what you like.</p>
+    <p class="sub">The most important decision of the night. Choose wisely.</p>
 
     <div class="food-grid" id="foodGrid">
       <button data-food="Italian">🍝 Italian</button>
       <button data-food="Sushi">🍣 Sushi</button>
       <button data-food="Pizza">🍕 Pizza</button>
       <button data-food="Tacos">🌮 Tacos</button>
-      <button data-food="Burgers"> Burgers</button>
+      <button data-food="Burgers">🍔 Burgers</button>
       <button data-food="Ramen">🍜 Ramen</button>
-      <button data-food="Brunch"> Brunch</button>
+      <button data-food="Brunch">🥞 Brunch</button>
       <button data-food="Dessert First">🍰 Dessert First</button>
       <button data-food="You Pick">💕 You Pick</button>
     </div>
 
     <div class="row">
       <button class="btn-back" onclick="goTo('step-date')">← Back</button>
-      <button class="btn-primary" onclick="confirmDate()">It's a date 💜</button>
+      <button class="btn-primary" onclick="confirmDate()">It's a date </button>
     </div>
   </section>
 
-  <!-- STEP 3: التأكيد -->
+  <!-- STEP 4: التأكيد -->
   <section class="card step hidden" id="step-done">
     <h1 class="done-title">It's a date! ♠️</h1>
 
@@ -94,13 +108,12 @@
       <div><span>📍</span><strong id="sumPlan">Surprise Me ✨</strong></div>
       <div><span>️</span><strong id="sumFood">You Pick 💕</strong></div>
     </div>
-
     <div class="meme">
       <img src="ali2.jpg" alt="ali2" />
-      <span>WHEN THEY SAID YES<br/>BEST DAY EVER FR</span>
+      <span>WHEN YOU SAID YES<br/>BEST DAY EVER FR</span>
     </div>
 
-    <p class="final-msg">I'll pick you up at 7. 🚗💨<br/>Can't wait to see you ✨</p>
+    <p class="final-msg">I'll pick you up at 7. 🚗<br/>Can't wait to see you 🐼</p>
     <a href="#" onclick="location.reload()" class="change">Change the plan</a>
   </section>
 
@@ -108,49 +121,5 @@
   <canvas id="confetti"></canvas>
 
   <script src="script.js"></script>
-  <!-- Firebase SDK -->
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyD4p32Zv8zXmkkwY5XcvakJ4oCu3zQPiQ",
-    authDomain: "date-responses-7d352.firebaseapp.com",
-    projectId: "date-responses-7d352",
-    storageBucket: "date-responses-7d352.firebasestorage.app",
-    messagingSenderId: "1:5242546167",
-    appId: "1:5242546167:web:3d9d5a01e8af854caff0f2",
-    measurementId: "G-0Z86Y603VD"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  function saveResponse() {
-    const dateVal = document.getElementById('dateInput').value;
-    const timeVal = document.getElementById('timeInput').value;
-    const planVal = document.getElementById('planInput').value;
-
-    db.collection('responses').add({
-      name: 'Someone said YES! 💖',
-      date: dateVal,
-      time: timeVal,
-      plan: planVal,
-      food: selectedFood,
-      timestamp: new Date()
-    }).then(() => {
-      console.log('Response saved!');
-    }).catch((error) => {
-      console.error('Error saving:', error);
-    });
-  }
-
-  const originalConfirm = confirmDate;
-  confirmDate = function() {
-    saveResponse();
-    originalConfirm();
-  };
-</script>
 </body>
 </html>
