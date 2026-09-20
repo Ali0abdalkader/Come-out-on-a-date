@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Date Responses</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fde2e4;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #c2185b;
+      text-align: center;
+    }
+    .response {
+      background: #fce4ec;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border-left: 4px solid #c2185b;
+    }
+    .response h3 {
+      margin: 0 0 10px 0;
+      color: #4a1a2e;
+    }
+    .response p {
+      margin: 5px 0;
+      color: #666;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .stat-box {
+      background: #c2185b;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .stat-box h2 {
+      font-size: 32px;
+      margin: 0;
+    }
+    .stat-box p {
+      margin: 5px 0 0 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 Date Responses Dashboard</h1>
+    
+    <div class="stats">
+      <div class="stat-box">
+        <h2 id="totalResponses">0</h2>
+        <p>Total Responses</p>
+      </div>
+      <div class="stat-box">
+        <h2 id="yesCount">0</h2>
+        <p>Said Yes</p>
+      </div>
+      <div class="stat-box">
+        <h2 id="avgDate">-</h2>
+        <p>Most Popular Date</p>
+      </div>
+    </div>
+
+    <div id="responsesList"></div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "1:123456789:web:abcdef"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function loadResponses() {
+      db.collection('responses').orderBy('timestamp', 'desc').get().then((snapshot) => {
+        const responsesList = document.getElementById('responsesList');
+        let responses = [];
+        
+        snapshot.forEach((doc) => {
+          responses.push(doc.data());
+        });
+
+        document.getElementById('totalResponses').textContent = responses.length;
+        document.getElementById('yesCount').textContent = responses.length;
+
+        // حساب التاريخ الأكثر شعبية
+        const dateCounts = {};
+        responses.forEach(r => {
+          dateCounts[r.date] = (dateCounts[r.date] || 0) + 1;
+        });
+        const mostPopular = Object.keys(dateCounts).reduce((a, b) => dateCounts[a] > dateCounts[b] ? a : b, '-');
+        document.getElementById('avgDate').textContent = mostPopular;
+
+        // عرض الإجابات
+        responsesList.innerHTML = responses.map(r => `
+          <div class="response">
+            <h3>💖 ${r.name}</h3>
+            <p><strong>📅 Date:</strong> ${r.date}</p>
+            <p><strong>🕐 Time:</strong> ${r.time}</p>
+            <p><strong>📍 Plan:</strong> ${r.plan}</p>
+            <p><strong>🍽️ Food:</strong> ${r.food}</p>
+          </div>
+        `).join('');
+      });
+    }
+
+    loadResponses();
+  </script>
+</body>
+</html>
