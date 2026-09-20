@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Will you go on a date with me?</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="badge"> 🐼BUILT WITH ALI 💜</div>
+
+  <!-- STEP 0: السؤال الرئيسي -->
+  <section class="card step" id="step-ask">
+    <p class="small-title">A SMALL QUESTION</p>
+    <h1>Will you go on a date with me?</h1>
+    <p class="sub">Take your time.</p>
+
+    <div class="meme">
+      <img src="ali.jpg" alt="ali" />
+      <span>ME WAITING FOR YOU<br/>TO PRESS YES</span>
+    </div>
+
+    <div class="buttons">
+      <button class="btn-yes" onclick="goTo('step-date')">💜 Yes, I'd love to</button>
+      <button class="btn-no" id="nopeBtn">Nope</button>
+    </div>
+  </section>
+
+  <!-- STEP 1: التاريخ والوقت -->
+  <section class="card step hidden" id="step-date">
+    <p class="small-title">STEP 1 OF 2</p>
+    <div class="icon">📅</div>
+    <h1>When works for you?</h1>
+    <p class="sub">Pick a date and time , I'll make it special.</p>
+
+    <label>DATE</label>
+    <input type="date" id="dateInput" value="2026-07-29" />
+
+    <label>TIME</label>
+    <select id="timeInput">
+      <option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option>
+      <option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option>
+      <option>5:00 PM</option><option selected>6:00 PM</option>
+      <option>7:00 PM</option><option>8:00 PM</option>
+    </select>
+
+    <label>THE PLAN</label>
+    <select id="planInput">
+      <option>Stars Night</option>
+      <option>Cozy Coffee</option>
+      <option>Sunset Walk</option>
+      <option>Nice dinner</option>
+      <option>Cinema time</option>
+      <option>Bowling game</option>
+      <option>Surprise you? ✨</option>
+    </select>
+
+    <button class="btn-primary" onclick="goTo('step-food')">Next: the food →</button>
+  </section>
+
+  <!-- STEP 2: الطعام -->
+  <section class="card step hidden" id="step-food">
+    <p class="small-title">STEP 2 OF 2</p>
+    <div class="icon">🍽️</div>
+    <h1>What should we eat?</h1>
+    <p class="sub">The most important decision of the night. Choose what you like.</p>
+
+    <div class="food-grid" id="foodGrid">
+      <button data-food="Italian">🍝 Italian</button>
+      <button data-food="Sushi">🍣 Sushi</button>
+      <button data-food="Pizza">🍕 Pizza</button>
+      <button data-food="Tacos">🌮 Tacos</button>
+      <button data-food="Burgers"> Burgers</button>
+      <button data-food="Ramen">🍜 Ramen</button>
+      <button data-food="Brunch"> Brunch</button>
+      <button data-food="Dessert First">🍰 Dessert First</button>
+      <button data-food="You Pick">💕 You Pick</button>
+    </div>
+
+    <div class="row">
+      <button class="btn-back" onclick="goTo('step-date')">← Back</button>
+      <button class="btn-primary" onclick="confirmDate()">It's a date 💜</button>
+    </div>
+  </section>
+
+  <!-- STEP 3: التأكيد -->
+  <section class="card step hidden" id="step-done">
+    <h1 class="done-title">It's a date! ♠️</h1>
+
+    <div class="summary">
+      <div><span>📅</span><strong id="sumDate">Thursday 6 August</strong></div>
+      <div><span>🕕</span><strong id="sumTime">6:00 PM</strong></div>
+      <div><span>📍</span><strong id="sumPlan">Surprise Me ✨</strong></div>
+      <div><span>️</span><strong id="sumFood">You Pick 💕</strong></div>
+    </div>
+
+    <div class="meme">
+      <img src="ali2.jpg" alt="ali2" />
+      <span>WHEN THEY SAID YES<br/>BEST DAY EVER FR</span>
+    </div>
+
+    <p class="final-msg">I'll pick you up at 7. 🚗💨<br/>Can't wait to see you ✨</p>
+    <a href="#" onclick="location.reload()" class="change">Change the plan</a>
+  </section>
+
+  <!-- Confetti canvas -->
+  <canvas id="confetti"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
