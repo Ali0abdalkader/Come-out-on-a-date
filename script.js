@@ -1,8 +1,26 @@
+// متغير لحفظ الاسم
+let userName = '';
+
 // التنقل بين الشاشات
 function goTo(id) {
   document.querySelectorAll('.step').forEach(s => s.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// حفظ الاسم والانتقال للسؤال
+function saveNameAndContinue() {
+  const nameInput = document.getElementById('nameInput');
+  const name = nameInput.value.trim();
+  
+  if (name === '') {
+    nameInput.style.borderColor = '#ff4444';
+    nameInput.placeholder = 'Please enter your name!';
+    return;
+  }
+  
+  userName = name;
+  goTo('step-ask');
 }
 
 // زر "Nope" يهرب
@@ -18,10 +36,8 @@ nopeBtn.addEventListener('touchstart', (e) => {
 });
 
 nopeBtn.addEventListener('click', (e) => {
-  if (!nopeBtn.classList.contains('moved')) {
-    e.preventDefault();
-    moveButton();
-  }
+  e.preventDefault();
+  moveButton();
 });
 
 function moveButton() {
