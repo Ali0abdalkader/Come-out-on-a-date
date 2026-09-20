@@ -108,5 +108,44 @@
   <canvas id="confetti"></canvas>
 
   <script src="script.js"></script>
+  <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "ضع_هنا_apiKey_اللي_نسخته",
+    authDomain: "ضع_هنا_authDomain",
+    projectId: "ضع_هنا_projectId",
+    storageBucket: "ضع_هنا_storageBucket",
+    messagingSenderId: "ضع_هنا_messagingSenderId",
+    appId: "ضع_هنا_appId"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  function saveResponse() {
+    const dateVal = document.getElementById('dateInput').value;
+    const timeVal = document.getElementById('timeInput').value;
+    const planVal = document.getElementById('planInput').value;
+
+    db.collection('responses').add({
+      name: 'Someone said YES! 💖',
+      date: dateVal,
+      time: timeVal,
+      plan: planVal,
+      food: selectedFood,
+      timestamp: new Date()
+    });
+  }
+
+  // تعديل دالة confirmDate
+  const originalConfirm = confirmDate;
+  confirmDate = function() {
+    saveResponse();
+    originalConfirm();
+  };
+</script>
 </body>
 </html>
