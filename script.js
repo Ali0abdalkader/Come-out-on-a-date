@@ -5,19 +5,36 @@ function goTo(id) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// زر "Nope" يهرب من الماوس
+// زر "Nope" يهرب
 const nopeBtn = document.getElementById('nopeBtn');
+
 nopeBtn.addEventListener('mouseover', () => {
+  moveButton();
+});
+
+nopeBtn.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  moveButton();
+});
+
+nopeBtn.addEventListener('click', (e) => {
+  if (!nopeBtn.classList.contains('moved')) {
+    e.preventDefault();
+    moveButton();
+  }
+});
+
+function moveButton() {
   const x = Math.random() * (window.innerWidth - 120);
   const y = Math.random() * (window.innerHeight - 60);
-  nopeBtn.style.position = 'fixed'; // يتحول إلى fixed فقط عند الهروب
+  nopeBtn.style.position = 'fixed';
   nopeBtn.style.left = x + 'px';
   nopeBtn.style.top = y + 'px';
   nopeBtn.style.zIndex = '1000';
-
+  
   const msgs = ['Think harder', 'Are you sure?', 'Really?', 'Last chance...', "C'mon!"];
   nopeBtn.textContent = msgs[Math.floor(Math.random() * msgs.length)];
-});
+}
 
 // اختيار الطعام
 let selectedFood = 'Italian';
@@ -33,8 +50,6 @@ document.querySelector('#foodGrid button').classList.add('active');
 // تأكيد الموعد
 function confirmDate() {
   const dateVal = document.getElementById('dateInput').value;
-  // إجبار التاريخ على الإنجليزية
-document.getElementById('dateInput').setAttribute('lang', 'en');
   const timeVal = document.getElementById('timeInput').value;
   const planVal = document.getElementById('planInput').value;
 
@@ -48,11 +63,8 @@ document.getElementById('dateInput').setAttribute('lang', 'en');
   document.getElementById('sumFood').textContent = selectedFood + ' 💕';
 
   goTo('step-done');
-  
   launchConfetti();
-  
 }
-
 
 // تأثير الكونفيتي
 function launchConfetti() {
