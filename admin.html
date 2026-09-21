@@ -2,39 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Date Responses</title>
+  <title>Date Responses Dashboard</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #fde2e4;
+      background: linear-gradient(135deg, #fde2e4 0%, #f7d6e0 100%);
       padding: 20px;
+      min-height: 100vh;
     }
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       background: white;
       padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
     }
     h1 {
       color: #c2185b;
       text-align: center;
-    }
-    .response {
-      background: #fce4ec;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 10px;
-      border-left: 4px solid #c2185b;
-    }
-    .response h3 {
-      margin: 0 0 10px 0;
-      color: #4a1a2e;
-    }
-    .response p {
-      margin: 5px 0;
-      color: #666;
+      margin-bottom: 30px;
     }
     .stats {
       display: grid;
@@ -43,25 +30,45 @@
       margin-bottom: 30px;
     }
     .stat-box {
-      background: #c2185b;
+      background: linear-gradient(135deg, #c2185b, #e91e63);
       color: white;
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 15px;
       text-align: center;
     }
     .stat-box h2 {
-      font-size: 32px;
+      font-size: 36px;
       margin: 0;
     }
     .stat-box p {
       margin: 5px 0 0 0;
       font-size: 14px;
     }
+    .response {
+      background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 15px;
+      border-left: 5px solid #c2185b;
+    }
+    .response h3 {
+      margin: 0 0 10px 0;
+      color: #4a1a2e;
+      font-size: 20px;
+    }
+    .response p {
+      margin: 5px 0;
+      color: #666;
+      font-size: 14px;
+    }
+    .response strong {
+      color: #c2185b;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>📊 Date Responses Dashboard</h1>
+    <h1>📊 Date Responses Dashboard </h1>
     
     <div class="stats">
       <div class="stat-box">
@@ -73,8 +80,8 @@
         <p>Said Yes</p>
       </div>
       <div class="stat-box">
-        <h2 id="avgDate">-</h2>
-        <p>Most Popular Date</p>
+        <h2 id="popularFood">-</h2>
+        <p>Popular Food</p>
       </div>
     </div>
 
@@ -86,51 +93,55 @@
 
   <script>
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT.appspot.com",
-      messagingSenderId: "123456789",
-      appId: "1:123456789:web:abcdef"
+      apiKey: "AIzaSyD4p32Zv8zXmkkwY5XcvakJ4oCu3zQPiQ",
+      authDomain: "date-responses-7d352.firebaseapp.com",
+      projectId: "date-responses-7d352",
+      storageBucket: "date-responses-7d352.firebasestorage.app",
+      messagingSenderId: "1:5242546167",
+      appId: "1:5242546167:web:3d9d5a01e8af854caff0f2",
+      measurementId: "G-0Z86Y603VD"
     };
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    function loadResponses() {
-      db.collection('responses').orderBy('timestamp', 'desc').get().then((snapshot) => {
-        const responsesList = document.getElementById('responsesList');
-        let responses = [];
-        
-        snapshot.forEach((doc) => {
-          responses.push(doc.data());
-        });
+    db.collection('responses').orderBy('timestamp', 'desc').get().then((snapshot) => {
+      const responses = [];
+      snapshot.forEach((doc) => {
+        responses.push(doc.data());
+      });
 
-        document.getElementById('totalResponses').textContent = responses.length;
-        document.getElementById('yesCount').textContent = responses.length;
+      document.getElementById('totalResponses').textContent = responses.length;
+      document.getElementById('yesCount').textContent = responses.length;
 
-        // حساب التاريخ الأكثر شعبية
-        const dateCounts = {};
-        responses.forEach(r => {
-          dateCounts[r.date] = (dateCounts[r.date] || 0) + 1;
-        });
-        const mostPopular = Object.keys(dateCounts).reduce((a, b) => dateCounts[a] > dateCounts[b] ? a : b, '-');
-        document.getElementById('avgDate').textContent = mostPopular;
+      const foodCounts = {};
+      responses.forEach(r => {
+        if (r.food) foodCounts[r.food] = (foodCounts[r.food] || 0) + 1;
+      });
+      
+      let popularFood = '-';
+      if (Object.keys(foodCounts).length > 0) {
+        popularFood = Object.keys(foodCounts).reduce((a, b) => foodCounts[a] > foodCounts[b] ? a : b);
+      }
+      document.getElementById('popularFood').textContent = popularFood;
 
-        // عرض الإجابات
-        responsesList.innerHTML = responses.map(r => `
+      if (responses.length === 0) {
+        document.getElementById('responsesList').innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">No responses yet 💔</p>';
+      } else {
+        document.getElementById('responsesList').innerHTML = responses.map((r, index) => `
           <div class="response">
-            <h3>💖 ${r.name}</h3>
-            <p><strong>📅 Date:</strong> ${r.date}</p>
-            <p><strong>🕐 Time:</strong> ${r.time}</p>
-            <p><strong>📍 Plan:</strong> ${r.plan}</p>
-            <p><strong>🍽️ Food:</strong> ${r.food}</p>
+            <h3>💖 Response #${index + 1}</h3>
+            <p><strong>📅 Date:</strong> ${r.date || 'N/A'}</p>
+            <p><strong> Time:</strong> ${r.time || 'N/A'}</p>
+            <p><strong>📍 Plan:</strong> ${r.plan || 'N/A'}</p>
+            <p><strong>🍽️ Food:</strong> ${r.food || 'N/A'}</p>
           </div>
         `).join('');
-      });
-    }
-
-    loadResponses();
+      }
+    }).catch((error) => {
+      console.error('Error:', error);
+      document.getElementById('responsesList').innerHTML = '<p style="text-align: center; color: red;">Error: ' + error.message + '</p>';
+    });
   </script>
 </body>
 </html>
